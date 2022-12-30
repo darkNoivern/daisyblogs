@@ -1,4 +1,6 @@
 import React from 'react'
+import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 const HomeCard = (props) => {
     return (
@@ -8,19 +10,24 @@ const HomeCard = (props) => {
                     <img src={props.blog.blogImage} className="home-blog-image" alt="blog image" />
                 </div>
                 <div className='p-4'>
-                    <div className="home-blog-tags text-primary mb2">GAME NEWS</div>
-                    <div className='home-blog-title mb2'>
-                        Kids Are Reportedly Scamming Each Other In Roblox's Criminal Underworld
-                    </div>
+                    <div className="home-blog-tags text-primary mb2 uppercase">{props.blog.blogCategory}</div>
+                    {/* <div className='home-blog-title mb2'> */}
+                    <Link 
+                        exact to={`/blog/${props.blog.id}`}
+                    className='home-blog-title mb2 hover:bg-primary'
+                        >
+                        {props.blog.blogTitle}
+                        </Link>
+                    {/* </div> */}
                     <div className='home-blog-about mb2'>
-                        Roblox is reportedly teaching kids some rather hard lessons.
+                        {props.blog.blogAbout}
                     </div>
                     <div className='home-blog-footer'>
                         <span>
-                            BY SEAN MURRAY
+                            By {props.blog.blogAuthorName}
                         </span>
                         <span>
-                            8 HOURS AGO
+                            {moment(props.blog.createdAt.toDate()).calendar()}
                         </span>
                     </div>
                 </div>

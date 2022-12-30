@@ -35,10 +35,10 @@ const Blogs = () => {
         <>
             <div className="card-setter">
                 {
-                    blogs.map((blog) => {
+                    blogs.map((blog, index) => {
                         return (
                             <>
-                                <div className='cards flexy'>
+                                <div key={index} className='cards flexy'>
                                     <div className="card shadow-box-hig custom-card bg-base-100 shadow-xl">
                                         <figure>
                                             <img src={blog.blogImage} className="image-fixed-height" alt="blog image" />
@@ -46,9 +46,14 @@ const Blogs = () => {
                                         <div className="card-body">
                                             <h2 className="card-title">
                                                 {blog.blogTitle}
+                                                {
+                                                    index === 0 ? 
                                                 <div className="badge badge-secondary">NEW</div>
+                                                :
+                                                <></>
+                                                }
                                             </h2>
-                                            <p>If a dog chews shoes whose shoes does he choose?</p>
+                                            <p>{blog.blogAbout}</p>
                                             <div className="card-actions justify-between">
                                                 <Link 
                                                 exact to={`/blog/${blog.id}`}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../firebase.config";
+import { auth, db, storage } from "../firebase.config";
 import { useNavigate } from "react-router-dom";
 import {
     collection,
@@ -8,7 +8,9 @@ import {
     doc,
     setDoc,
 } from "firebase/firestore";
-import '../styles/login.css'
+import '../styles/login.css';
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+
 
 const New = () => {
 
@@ -53,57 +55,102 @@ const New = () => {
 
         event.preventDefault();
 
-        if (!isAlphanumeric(username)) {
-            setIllegalUsername(true);
-            return;
+        const imageAsFile = event.target[0].files[0]
+        const file = event.target[0].files[0];
+        // event.preventDefault()
+
+        console.log('start of upload')
+
+        // async magic goes here...
+        if (imageAsFile === '') {
+            console.error(`not an image, the image file is a ${typeof (imageAsFile)}`)
         }
 
-        const checkUsernamePresent = userlist.find((individual) => {
-            return (individual.displayName === username);
-        })
-        if (checkUsernamePresent !== undefined) {  //  USERNAME FOUND
-            setUsernamePresent(true);
-            return;
-        }
+        const storageRef = ref(storage, `/profile/${imageAsFile.name}`)
 
-        const checkEmailPresent = userlist.find((individual) => {
-            return (individual.email === email);
-        })
-        if (checkEmailPresent !== undefined) {  //  USERNAME FOUND
-            setEmailPresent(true);
-            return;
-        }
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        uploadTask.on('state_changed',
+            (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+                switch (snapshot.state) {
+                    case 'paused':
+                        console.log('Upload is paused');
+                        break;
+                    case 'running':
+                        console.log('Upload is running');
+                        break;
+                }
+            },
+            (error) => {
+                console.log(error);
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    console.log('File available at', downloadURL);
+
+                    if (!isAlphanumeric(username)) {
+                        setIllegalUsername(true);
+                        return;
+                    }
+
+                    const checkUsernamePresent = userlist.find((individual) => {
+                        return (individual.displayName === username);
+                    })
+                    if (checkUsernamePresent !== undefined) {  //  USERNAME FOUND
+                        setUsernamePresent(true);
+                        return;
+                    }
+
+                    const checkEmailPresent = userlist.find((individual) => {
+                        return (individual.email === email);
+                    })
+                    if (checkEmailPresent !== undefined) {  //  USERNAME FOUND
+                        setEmailPresent(true);
+                        return;
+                    }
 
 
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((result) => {
-                // Signed in 
-                const user = result.user;
-                updateProfile(result.user, {
-                    displayName: username,
+                    createUserWithEmailAndPassword(auth, email, password)
+                        .then((result) => {
+                            // Signed in 
+                            const user = result.user;
+                            updateProfile(result.user, {
+                                displayName: username,
+                                photoURL: downloadURL,
+                            });
+
+                            setDoc(doc(db, "users", result.user.uid), {
+                                uid: result.user.uid,
+                                displayName: username,
+                                email,
+                                blogs: [],
+                                photoURL: downloadURL,
+                            });
+
+                            navigate("/");
+                            // ...
+                        })
+                        .catch((error) => {
+                            setError(true);
+                            setUsername("");
+                            setPassword("");
+                            setEmail("");
+                            return;
+                            const errorCode = error.code;
+                            const errorMessage = error.message;
+                            console.log(errorCode, errorMessage);
+                            // ..
+                        });
+
+                    document.querySelector('#profile-img').value = null;
                 });
+            }
+        );
 
-                setDoc(doc(db, "users", result.user.uid), {
-                    uid: result.user.uid,
-                    displayName: username,
-                    email,
-                    notebooks: [],
-                });
 
-                navigate("/");
-                // ...
-            })
-            .catch((error) => {
-                setError(true);
-                setUsername("");
-                setPassword("");
-                setEmail("");
-                return;
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode, errorMessage);
-                // ..
-            });
+
     }
 
     const signin = (event) => {
@@ -128,7 +175,7 @@ const New = () => {
 
     return (
         <>
-            <div className="flexy">
+            <div className="flexy p-4">
                 <div className='p-4 card shadow-box-hig signincard'>
                     {
                         signUp ?
@@ -168,19 +215,28 @@ const New = () => {
                         <div className='flexy h-full'>
                             {
                                 signUp ?
-                                    <div>
-                                        <input type="file" className="mb-2 border-primary custom-file-input w-full" />
-                                        <input type="text" placeholder="username" className="mb-2 input input-bordered w-full max-w-xs" />
-                                        <input type="email" placeholder="abc@gmail.com" className="mb-2 input input-bordered w-full max-w-xs" />
-                                        <input type="password" placeholder="password" className="mb-2 input input-bordered w-full max-w-xs" />
+                                    <form onSubmit={signup}>
+                                        <input type="file" required id='profile-img' className="mb-2 border-primary custom-file-input w-full" />
+                                        <input required 
+                                        onChange={(event)=>{setUsername(event.target.value)}}
+                                        type="text" placeholder="username" className="mb-2 input input-bordered w-full max-w-xs" />
+                                        <input  required
+                                        onChange={(event)=>{setEmail(event.target.value)}}
+                                        type="email" placeholder="abc@gmail.com" className="mb-2 input input-bordered w-full max-w-xs" />
+                                        <input required
+                                        onChange={(event)=>{setPassword(event.target.value)}} type="password" placeholder="password" className="mb-2 input input-bordered w-full max-w-xs" />
                                         <button className="btn w-full btn-primary">Sign-Up</button>
-                                    </div>
+                                    </form>
                                     :
-                                    <div>
-                                        <input type="email" placeholder="abc@gmail.com" className="mb-2 input input-bordered w-full max-w-xs" />
-                                        <input type="password" placeholder="password" className="mb-2 input input-bordered w-full max-w-xs" />
+                                    <form onSubmit={signin}>
+                                        <input required
+                                        onChange={(event)=>{setEmail(event.target.value)}}
+                                        type="email" placeholder="abc@gmail.com" className="mb-2 input input-bordered w-full max-w-xs" />
+                                        <input required
+                                        onChange={(event)=>{setEmail(event.target.value)}}
+                                        type="password" placeholder="password" className="mb-2 input input-bordered w-full max-w-xs" />
                                         <button className="btn w-full btn-primary">Sign-In</button>
-                                    </div>
+                                    </form>
                             }
                         </div>
                     </div>

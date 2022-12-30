@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import HomeCard from './HomeCard';
 import { db } from '../firebase.config';
 import {
@@ -12,8 +12,11 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import '../styles/home.css'
 import alakazam from '../images/alakazam.png'
+import { AuthContext } from '../context/AuthContext';
+
 const Home = () => {
 
+    const { currentUser } = useContext(AuthContext);
     const [blogs, setBlogs] = useState([]);
 
     const blogsCollectionRef = collection(db, "blogs");
@@ -21,18 +24,16 @@ const Home = () => {
 
     useEffect(() => {
         onSnapshot(sortRef, (snapshot) => {
-            setBlogs(
-                snapshot.docs.map((doc) => {
-                    return {
-                        id: doc.id,
-                        ...doc.data()
-                    };
-                })
-            );
+            const arr = snapshot.docs.map((doc) => {
+                return {
+                    id: doc.id,
+                    ...doc.data()
+                };
+            })
+            console.log(arr)
+            setBlogs(arr);
         });
-    }, []);
-
-    const html = '<HomeCard blog={blog} />';
+    }, [currentUser]);
 
     return (
         <>

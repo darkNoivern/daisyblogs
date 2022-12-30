@@ -5,3 +5,41 @@
 .rounded-image{
     border-radius: 1rem;
 }
+
+.smeargle a{
+    /* border-bottom: 1px solid hsl(var(--p)); */
+    color: hsl(var(--p));
+}
+
+.smeargle img{
+    
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.smeargle h1{
+    font-size: 2.5rem;
+}
+
+.smeargle h2{
+    font-size: 2rem;
+}
+
+.smeargle h3{
+    font-size: 1.75rem;
+}
+
+.smeargle h4{
+    font-size: 1.5rem;
+}
+
+.smeargle h5{
+    font-size: 1.25rem;
+}
+
+.smeargle h6{
+    font-size: 1rem;
+}
+
+
