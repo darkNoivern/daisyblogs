@@ -1,0 +1,59 @@
+.home-img{
+    width: min(30rem, 100%);
+    height: auto;
+}
+
+.home-text{
+    text-align: center;
+    min-height: 15rem;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.home-blog-grid{
+    grid-template-columns: repeat(1, 1fr);
+}
+
+
+@media screen and (min-width: 768px) {
+    .home-blog-grid{
+        grid-template-columns: 25rem 1fr;
+    }    
+}
+
+.home-blog{
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    min-height: 20rem;
+}
+
+.home-blog-image{
+    height: 16rem;
+    width: 25rem;
+}
+
+.home-blog-tags{
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+.home-blog-title{
+    font-size: 1.75rem;
+    /* line-height: 1.65rem; */
+    font-weight: 600;
+}
+
+.home-blog-about{
+    font-size: 1.15rem;
+
+}
+
+.home-blog-footer{
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.about-part-margin{
+    margin-top: 2rem;
+}

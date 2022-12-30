@@ -1,0 +1,147 @@
+/* LOGIN */
+.login__main {
+    width: 350px;
+    height: 500px;
+    overflow: hidden;
+    border-radius: 10px;
+    margin: 3rem 0;
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+#chk {
+    display: none;
+}
+
+.signup {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.login__label {
+    font-size: 2.3rem;
+    justify-content: center;
+    display: flex;
+    margin: 60px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.5s ease-in-out;
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+.login-label-text{
+    /* color: hsl(var(--pc)) !important; */
+    color: black;
+}
+
+.login{
+    --tw-bg-opacity: 1;
+    background-color: hsl(var(--p) / var(--tw-bg-opacity));
+
+}
+
+.login__input {
+    width: 60% !important;
+    height: 40px;
+    /* background-color: #e0dede; */
+    display: flex;
+    justify-content: center;
+    /* margin: 20px auto;
+    padding: 10px;
+    border: none;
+    outline: none;
+    border-radius: 5px; */
+    /* color: var(--title-color);
+    background-color: var(--input-color); */
+    border-radius: 0.5rem;
+    border: 1px solid black;
+    color: black;
+    padding: 0.25rem 1rem 0.25rem;
+    margin-bottom: 1rem;
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+.login__button {
+    width: 60%;
+    height: 40px;
+    margin: 10px auto;
+    display: block;
+    justify-content: center;
+    color: black;
+    /* background-color: var(--first-color-lighter); */
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 20px;
+    outline: none;
+    /* border: 1px solid black; */
+    border-radius: 5px;
+    /* transition: 0.2s ease-in; */
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+.login {
+    height: 460px;
+    /* background-color: var(--first-color-second); */
+    border-radius: 60% / 10%;
+    transform: translateY(-180px);
+    transition: 0.8s ease-in-out;
+}
+
+.login .login__label {
+    /* color: var(--title-color); */
+    transform: scale(0.6);
+}
+
+#chk:checked~.login {
+    transform: translateY(-500px);
+}
+
+
+#chk:checked~.login .login__label {
+    transform: scale(1);
+}
+
+#chk:checked~.signup .login__label {
+    transform: scale(0.6);
+}
+
+.tabsContent{
+    background-color: hsl(var(--b1)) !important;
+    border-radius: 0 1rem !important;
+}
+
+.signincard{
+    height: 30rem;
+    width: min(25rem, 100vw);
+}
+
+.p-5 {
+    padding: 1.25rem;
+}
+
+.custom-file-input{
+    background-color: hsl(var(--b1)) !important;
+    border-radius: 0.5rem;
+    background-color: hsl(var(--p)); 
+}
+
+.border-primary{
+    border: 1px solid hsl(var(--p)) !important;
+}
+
+::-webkit-file-upload-button{
+    padding: 0.5rem 1rem !important;
+    background-color: hsl(var(--p)) !important; 
+    border: none !important;   
+    color: black !important;
+}
+
+.mb-2 {
+    margin-bottom: 0.5rem/* 8px */;
+}
+
+.signincard{
+    margin-top: 4rem;
+}

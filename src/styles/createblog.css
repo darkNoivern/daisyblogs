@@ -1,0 +1,64 @@
+/* .file-input{
+    border: 0 !important;
+    padding: 0 !important;
+} */
+
+.mt-1 {
+    margin-top: 1rem;
+}
+
+.pad-lr {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.rem-border {
+    border: 0 !important;
+}
+
+.image-fixed-height {
+    width: 400px;
+    height: 225px;
+}
+
+.submit-btn {
+    margin-top: 1rem;
+}
+
+.alert-div {
+    background-color: #dc3545;
+    color: white;
+}
+
+.pt-1-25 {
+    padding-top: 1.25rem;
+}
+
+.custom-quill {
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+.ql-formats,
+.ql-header {
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+.ql-editor p,
+pre,
+a,
+ul,
+li,
+ol,
+span,
+div {
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+.file-input {
+    border: 1px solid hsl(var(--bc));
+}
+
+.login-tab {
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
