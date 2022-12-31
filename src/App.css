@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,900;1,800&display=swap');
 
 body {
   font-family: 'Montserrat', sans-serif !important;
@@ -18,6 +18,38 @@ body {
 .text-primary {
   --tw-text-opacity: 1;
   color: hsl(var(--p) / var(--tw-text-opacity));
+}
+
+.bg-base-200 {
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--b2, var(--b1)) / var(--tw-bg-opacity));
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.px-2 {
+  padding-left: 0.5rem/* 8px */;
+  padding-right: 0.5rem/* 8px */;
+}
+
+.flex {
+  display: flex;
+}
+
+.w-max-full{
+  max-width: 100%;
+}
+
+.bg-base-200 {
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--b2, var(--b1)) / var(--tw-bg-opacity));
+}
+
+.text-base-300 {
+  --tw-text-opacity: 1;
+  color: hsl(var(--b3, var(--b2)) / var(--tw-text-opacity));
 }
 
 .mouse600 {
@@ -101,6 +133,45 @@ input{
   color: rgb(0 0 0 / var(--tw-text-opacity));
 }
 
+.py-4 {
+  padding-top: 1rem/* 16px */;
+  padding-bottom: 1rem/* 16px */;
+}
+
+.p-2 {
+  padding: 0.5rem/* 8px */;
+}
+
+.hover-primary{
+  cursor: pointer;
+}
+
+.hover\:bg-base-300:hover {
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--b3, var(--b2)) / var(--tw-bg-opacity));
+}
+
+.rounded-lg {
+  border-radius: 0.5rem/* 8px */;
+}
+
+.px-4 {
+  padding-left: 1rem/* 16px */;
+  padding-right: 1rem/* 16px */;
+}
+
+.mt-4 {
+  margin-top: 1rem/* 16px */;
+}
+
+.mt-2 {
+  margin-top: 0.5rem/* 8px */;
+}
+
+.hover-primary:hover{
+  color: hsl(var(--p));
+}
+
 /* MODAL */
 
 /* Active Modal */
@@ -160,7 +231,6 @@ input{
 .services__modal-service {
   display: flex;
 }
-
 
 .services__modal-service {
   display: flex;

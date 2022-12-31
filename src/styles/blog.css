@@ -19,14 +19,17 @@
 }
 
 .smeargle h1{
+    font-weight: 700;
     font-size: 2.5rem;
 }
 
 .smeargle h2{
+    font-weight: 600;
     font-size: 2rem;
 }
 
 .smeargle h3{
+    font-weight: 500;
     font-size: 1.75rem;
 }
 
@@ -42,4 +45,47 @@
     font-size: 1rem;
 }
 
+.blog-page-title{
+    font-size: 3rem;
+    font-weight: 600;
+}
 
+.mb-3 {
+    margin-bottom: 0.75rem/* 12px */;
+}
+
+.small-text{
+    font-size: 0.75rem;
+}
+
+.bold{
+    font-weight: bold;
+}
+.mr-3 {
+    margin-right: 0.75rem/* 12px */;
+}
+
+.blog-page{
+    width: min(80rem, 100%);
+}
+
+.blog-page-upper{
+    margin-bottom: 4rem;
+}
+
+.mt-5 {
+    margin-top: 1.25rem/* 20px */;
+}
+
+.text-600{
+    font-weight: 600;
+}
+
+.gap1{
+    gap: 1rem;
+}
+
+.recent-blogs-grid{
+    grid-template-columns: 1fr 2fr;
+    margin-top: 2rem;
+}

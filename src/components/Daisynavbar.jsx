@@ -74,7 +74,7 @@ const Daisynavbar = () => {
                                             <Dropdown.Item
                                                 onClick={() => {
                                                     if (document.documentElement.getAttribute('data-theme') === "halloween") {
-                                                        document.documentElement.setAttribute('data-theme', "emerald")
+                                                        document.documentElement.setAttribute('data-theme', "cmyk")
                                                     }
                                                     else {
                                                         document.documentElement.setAttribute('data-theme', "halloween")
@@ -128,7 +128,7 @@ const Daisynavbar = () => {
                                         <Dropdown.Item
                                                 onClick={() => {
                                                     if (document.documentElement.getAttribute('data-theme') === "halloween") {
-                                                        document.documentElement.setAttribute('data-theme', "emerald")
+                                                        document.documentElement.setAttribute('data-theme', "cmyk")
                                                     }
                                                     else {
                                                         document.documentElement.setAttribute('data-theme', "halloween")
