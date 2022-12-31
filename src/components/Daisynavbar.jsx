@@ -115,7 +115,7 @@ const Daisynavbar = () => {
                                     </Button>
                                     <Dropdown.Menu className="w-52 width13 menu-compact">
                                         <li>
-                                            <NavLink exact to={`/user/${currentUser.uid}`} className="justify-between">
+                                            <NavLink exact to={`/user/${currentUser.displayName}`} className="justify-between">
                                                 Profile
                                                 <span className="badge pb-1 badge-secondary">New</span>
                                             </NavLink>

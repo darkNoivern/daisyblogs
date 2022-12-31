@@ -12,10 +12,12 @@ import Daisynavbar from './Daisynavbar';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { current } from 'daisyui/src/colors';
+// import { current } from 'daisyui/src/colors';
+import Category from './Category';
 import New from './New'
 
 const Index = () => {
+
     const { currentUser } = useContext(AuthContext)
 
     return (
@@ -25,9 +27,11 @@ const Index = () => {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/blogs" element={ <Blogs />} />
-                    <Route exact path='/blog/:id' element={ <Blog />} />
-                    <Route exact path='/user/:id' element={<Profile /> } />
-                    <Route path="/createblog" element={ <NewCreate />} />
+                    <Route exact path='/blog/:id' element={ currentUser ? <Blog /> : <New />} />
+                    <Route exact path='/user/:id' element={currentUser ? <Profile /> : <New />} />
+                    <Route exact path='/category/:id' element={<Category />} />
+                    
+                    <Route path="/createblog" element={ currentUser ? <NewCreate /> : <New />} />
                     <Route path="/login" element={<New />} />
                     <Route path='*' element={<Error />} />
                 </Routes>

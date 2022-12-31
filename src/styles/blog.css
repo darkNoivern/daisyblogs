@@ -20,7 +20,8 @@
 }
 
 .comment-smeargle a {
-    color: hsl(var(--s));
+    /* color: hsl(var(--s)); */
+    color: white;
 }
 
 .smeargle img {

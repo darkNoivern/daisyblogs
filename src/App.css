@@ -190,8 +190,25 @@ input{
   margin-top: 0.5rem/* 8px */;
 }
 
+.my-3 {
+  margin-top: 0.75rem/* 12px */;
+  margin-bottom: 0.75rem/* 12px */;
+}
+
 .hover-primary:hover{
   color: hsl(var(--p));
+}
+
+.hover-secondary:hover{
+  color: hsl(var(--s));
+}
+
+.ml-2 {
+  margin-left: 0.5rem/* 8px */;
+}
+
+.mb-1 {
+  margin-bottom: 0.25rem/* 4px */;
 }
 
 /*========== SCROLL BAR ==========*/
@@ -257,8 +274,9 @@ input{
 
 .services__modal-content {
   position: relative;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
+  /* background-color: rgba(0, 0, 0, 0.5); */
+  background-color: hsl(var(--p));
+  color: black;
   padding: 1.5rem;
   border-radius: 0.5rem;
 }

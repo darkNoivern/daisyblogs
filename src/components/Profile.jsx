@@ -14,6 +14,7 @@ import {
 import { db } from "../firebase.config";
 import { AuthContext } from '../context/AuthContext';
 import moment from 'moment';
+import Error from './Error';
 
 const Profile = () => {
 
@@ -39,7 +40,7 @@ const Profile = () => {
             console.log(users, id)
             setUser(
                 users.filter((ui, index) => {
-                    return (ui.uid === id);
+                    return (ui.displayName === id);
                 })
             )
         });
@@ -57,7 +58,7 @@ const Profile = () => {
                 })
             setBlogs(
                 arr.filter((ui, index) => {
-                    return ui.blogAuthorUid === id
+                    return ui.blogAuthorName === id
                 })
             )
         });
@@ -85,7 +86,7 @@ const Profile = () => {
 
 
                         {
-                            currentUser.uid === id
+                            currentUser.displayName === id
                                 ?
                                 <>
                                     <div className="flexy text-secondary bold">
@@ -116,7 +117,7 @@ const Profile = () => {
                                                                         <></>
                                                                 } */}
                                                             </h2>
-                                                            <p>{blog.blogAbout.slice(0.50)}</p>
+                                                            <p>{blog.blogAbout.slice(0,50)}</p>
                                                             <div className="card-actions justify-between">
                                                                 <Link
                                                                     exact to={`/blog/${blog.id}`}
@@ -139,6 +140,7 @@ const Profile = () => {
                     </>
                     :
                     <>
+                    <Error />
                     </>
             }
         </>

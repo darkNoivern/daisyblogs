@@ -16,16 +16,25 @@ const NewCreate = () => {
     const [blogAbout, setBlogAbout] = useState("");
     const [blogDescription, setBlogDescription] = useState("");
 
+    const [picError, setPicError] = useState(false);
+    const [fillError, setFillError] = useState(false);
+
     const handleChange = (event) => {
         console.log(event);
         setBlogDescription(event);
     }
+
     const blogsCollectionRef = collection(db, "blogs");
 
     const submitBlog = (event) => {
 
         event.preventDefault();
-        console.log(event.target[0])
+
+        if(document.querySelector('#blog-img').value === '' || blogTitle === "" || blogCategory === "" || blogAbout === "" || blogDescription === ""){
+            setFillError(true);
+            return ;
+        }
+
         const imageAsFile = event.target[0].files[0]
         const file = event.target[0].files[0];
 
@@ -54,6 +63,7 @@ const NewCreate = () => {
                 }
             },
             (error) => {
+                setPicError(true);
                 console.log(error);
             },
             () => {
@@ -88,16 +98,52 @@ const NewCreate = () => {
 
     return (
         <>
-            <div className="p-4 rounded">
+            <div className="p-4">
+            {
+                    picError && 
+                    <div className="services__modal">
+                        <div className="services__modal-content login__error__modal-content">
+                            <h4 className="services__modal-title">Alakazam <br /> Guidelines</h4>
+                            <i
+                                onClick={() => {
+                                    setPicError(false);
+                                    document.querySelector('#blog-img').value = null;
+                                }}
+                                className="uil uil-times services__modal-close">
+                            </i>
+                            <div>
+                                Couldn't upload profile picture !! Please Retry 🥺.
+                            </div>
+                        </div>
+                    </div>
+                }
+                {
+                    fillError && 
+                    <div className="services__modal">
+                        <div className="services__modal-content login__error__modal-content">
+                            <h4 className="services__modal-title">Alakazam <br /> Guidelines</h4>
+                            <i
+                                onClick={() => {
+                                    setFillError(false);
+                                }}
+                                className="uil uil-times services__modal-close">
+                            </i>
+                            <div>
+                                Please Fill out all the fields
+                            </div>
+                        </div>
+                    </div>
+                }
+
                 <form action="" onSubmit={submitBlog}>
                     <label className="label">
                         <span className="label-text">Blog Category</span>
                     </label>
-                    <Dropdown className='mb-4 dropdown-hover bg-secondary text-white rounded'>
+                    <Dropdown className='mb-4 dropdown-hover bg-secondary rounded'>
                         <div className='p-2 rounded text-black border-none'>
                             {blogCategory === "" ? "Dropdown" : blogCategory} <i class="uil uil-angle-down"></i>
                         </div>
-                        <Dropdown.Menu tabIndex={0} id='create-blog-dropdown' className="menu-compact w-52 width13 shadow-box-med">
+                        <Dropdown.Menu tabIndex={0} id='create-blog-dropdown' className="menu-compact text-base w-52 width13 shadow-box-med">
                             <Dropdown.Item
                                 onClick={() => { setBlogCategory("New Technologies"); }}
                             >
@@ -128,12 +174,14 @@ const NewCreate = () => {
                         // onChange={() => {
                         //         setError(false);
                         //     }}
-                        type="file" id='blog-img' className="mb-4 border-primary custom-file-input w-full" />
+                        required
+                        type="file" name='image' accept='image/*' id='blog-img' className="mb-4 border-primary custom-file-input w-full" />
 
                     <label className="label">
                         <span className="label-text">Blog Title</span>
                     </label>
                     <Input
+                    required
                     onChange={(event)=>{setBlogTitle(event.target.value)}} 
                     className='mb-4 w-full' />
 
@@ -141,6 +189,7 @@ const NewCreate = () => {
                         <span className="label-text">Blog About</span>
                     </label>
                     <Input
+                    required
                     onChange={(event)=>{setBlogAbout(event.target.value)}} 
                     className='mb-4 w-full' />
 

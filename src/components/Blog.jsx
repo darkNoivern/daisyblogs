@@ -8,6 +8,8 @@ import { Card } from 'react-daisyui';
 import '../styles/blog.css'
 import { AuthContext } from '../context/AuthContext';
 import moment from 'moment';
+import Error from './Error';
+import { Link } from 'react-router-dom';
 
 const Blog = () => {
 
@@ -87,7 +89,7 @@ const Blog = () => {
                                     <div className='mb-3 small-text flex'>
 
                                         <div className='uppercase mr-3'>
-                                            By <span className='bold'>{blog[0].blogAuthorName}</span>
+                                            By <Link exact to={`/user/${blog[0].blogAuthorName}`} className='hover-secondary bold'>{blog[0].blogAuthorName}</Link>
                                         </div>
                                         <div className='uppercase'>
                                             Published <span className='bold'>{moment(blog[0].createdAt.toDate()).calendar()}</span>
@@ -154,10 +156,12 @@ const Blog = () => {
                                                                     </div>
                                                                 </div>
 
-                                                                <div className="chat-header w-full flex px-2 justify-between">
+                                                                <div className="chat-header mb-1 w-full flex px-2 justify-between">
                                                                     <span>
+                                                                        <Link className='hover-secondary bold' exact to={`/user/${comment.commentAuthorName}`}>
 
-                                                                        {comment.commentAuthorName}
+                                                                            {comment.commentAuthorName}
+                                                                        </Link>
                                                                     </span>
                                                                     <time className="text-xs opacity-50">
                                                                         {moment(comment.commentTime.toDate()).calendar()}
@@ -198,7 +202,9 @@ const Blog = () => {
                                                                     <div>
                                                                         <div className='flex justify-between small-text bold'>
                                                                             <span>
-                                                                                {element.blogAuthorName}
+                                                                                <Link className='hover-secondary bold' exact to={`/user/${comment.commentAuthorName}`}>
+                                                                                    {element.blogAuthorName}
+                                                                                </Link>
                                                                             </span>
                                                                             <span>
                                                                                 {moment(element.createdAt.toDate()).calendar()}
@@ -206,7 +212,7 @@ const Blog = () => {
                                                                         </div>
                                                                         <div className='hover-primary'>
 
-                                                                        {element.blogTitle}
+                                                                            {element.blogTitle}
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -248,6 +254,7 @@ const Blog = () => {
                         </>
                         :
                         <>
+                            <Error />
                         </>
                 }
 

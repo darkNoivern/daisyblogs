@@ -1,4 +1,14 @@
-.error-svg{
-    height: 86vh;
-    width: 100vw;
+.error-page-img{
+    height: 20rem;
+    width: 20rem;
+}
+
+.error404{
+    font-size: 10rem;
+    line-height: 12.5rem;
+    font-weight: 600;
+}
+
+.error-text{
+    font-size: 1.5rem;
 }

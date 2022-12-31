@@ -1,10 +1,24 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import alakazam from '../images/alakazam.png';
 import '../styles/error.css'
 
 const Error = () => {
     return (
         <>
-            <img className='error-svg' src="https://firebasestorage.googleapis.com/v0/b/daisyblog-4dbfe.appspot.com/o/images%2F404-svg-animation.svg?alt=media&token=9bd46530-bcbf-4d2d-a366-afa50e77fa73" alt="" />
+            <div className="p-4">
+                <div className='flexy'>
+                    <img className='error-page-img' src={alakazam} alt="" />
+                </div>
+                <div className='error404 flexy'>404</div>
+                <div className='error-text flexy'>
+                    This page is Not Available
+                </div>
+                <div className='flexy mt-4'>
+                <Link exact to='/' className="py-2 px-4 rounded cursor-pointer btn-primary">Teleport</Link>
+                </div>
+            </div>
         </>
     )
 }

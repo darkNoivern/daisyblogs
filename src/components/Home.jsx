@@ -12,6 +12,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import '../styles/home.css'
 import alakazam from '../images/alakazam.png'
+import snom from '../images/snom.png'
 import { AuthContext } from '../context/AuthContext';
 
 const Home = () => {
@@ -41,7 +42,7 @@ const Home = () => {
 
                 <div className="grid grid2 mb-10 p-4">
                     <div className="home-text flexy">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, ex!
+                    Everyone you will ever meet knows something you don't !!
                     </div>
                     <div className="home-img-container flexy">
                         <img className='home-img' src={alakazam} alt="" />
@@ -73,7 +74,9 @@ const Home = () => {
 
                             <div>
                                 <div className="flexy mt-4">
-                                    <img className="mask mask-circle" src="https://placeimg.com/160/160/arch" />
+                                    {/* <img className="mask mask-circle" src="https://placeimg.com/160/160/arch" /> */}
+                                    {/* <img className="mask mask-circle" src={snom} /> */}
+                                    <img className='my-3' src={snom} alt="" />
                                 </div>
                                 <div className="flexy mt-2 text-secondary bold">
                                     daisyBlogs
@@ -88,10 +91,26 @@ const Home = () => {
                                 Categories
                             </div>
                             <div className="grid grid-permanent-2 mt-2">
-                                <div className="text-primary small-text bold uppercase">New Technologies</div>
-                                <div className="text-primary small-text bold uppercase">World Problems</div>
-                                <div className="text-primary small-text bold uppercase">Interviews</div>
-                                <div className="text-primary small-text bold uppercase">Project Collab</div>
+                                <div className="text-primary small-text bold uppercase">
+                                    <Link exact to='/category/new_technologies'>
+                                        New Technologies
+                                    </Link>
+                                </div>
+                                <div className="text-primary small-text bold uppercase">
+                                    <Link exact to='/category/world_problems'>
+                                        World Problems
+                                    </Link>
+                                </div>
+                                <div className="text-primary small-text bold uppercase">
+                                <Link exact to='/category/interviews'>
+                                        Interviews
+                                    </Link>
+                                    </div>
+                                <div className="text-primary small-text bold uppercase">
+                                <Link exact to='/category/project_collab'>
+                                        Project Collab
+                                    </Link>
+                                    </div>
                             </div>
 
                         </div>

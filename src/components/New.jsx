@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db, storage } from "../firebase.config";
 import { useNavigate } from "react-router-dom";
@@ -10,9 +10,12 @@ import {
 } from "firebase/firestore";
 import '../styles/login.css';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { AuthContext } from '../context/AuthContext';
 
 
 const New = () => {
+
+    const {currentUser} = useContext(AuthContext)
 
     const [signUp, setSignUp] = useState(true);
 
@@ -27,16 +30,19 @@ const New = () => {
     const [usernamePresent, setUsernamePresent] = useState(false);
     const [emailPresent, setEmailPresent] = useState(false);
     const [error, setError] = useState(false);
+    const [picError, setPicError] = useState(false);
+    const [fillError, setFillError] = useState(false);
 
     const [userlist, setUserlist] = useState([]);
 
     const navigate = useNavigate();
 
     function isAlphanumeric(str) {
-        return /^[a-zA-Z0-9]+$/i.test(str)
+        return /^[a-z0-9_]+$/i.test(str)
     }
 
     const usersCollectionRef = collection(db, "users");
+
     useEffect(() => {
         onSnapshot(usersCollectionRef, (snapshot) => {
 
@@ -49,7 +55,7 @@ const New = () => {
             setUserlist(result);
             // console.log(result)
         });
-    }, []);
+    }, [currentUser]);
 
     const signup = (event) => {
 
@@ -85,6 +91,7 @@ const New = () => {
             },
             (error) => {
                 console.log(error);
+                setPicError(true);
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -176,6 +183,118 @@ const New = () => {
     return (
         <>
             <div className="flexy p-4">
+            {
+                    fillError && 
+                    <div className="services__modal">
+                        <div className="services__modal-content login__error__modal-content">
+                            <h4 className="services__modal-title">Alakazam <br /> Guidelines</h4>
+                            <i
+                                onClick={() => {
+                                    setFillError(false);
+                                }}
+                                className="uil uil-times services__modal-close">
+                            </i>
+                            <div>
+                                Please Fill out all the fields
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            {
+                    illegalUsername &&
+                    <div className="services__modal">
+                        <div className="services__modal-content login__error__modal-content">
+                            <h4 className="services__modal-title">Alakazam <br /> Guidelines</h4>
+                            <i
+                                onClick={() => {
+                                    setIllegalUsername(false);
+                                    setUsername("");
+                                }}
+                                className="uil uil-times services__modal-close">
+                            </i>
+                            <div>
+                                Username should only contain a-z, 0-9 and _ with no spaces.
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                {
+                    picError && 
+                    <div className="services__modal">
+                        <div className="services__modal-content login__error__modal-content">
+                            <h4 className="services__modal-title">Alakazam <br /> Guidelines</h4>
+                            <i
+                                onClick={() => {
+                                    setPicError(false);
+                                    document.querySelector('#profile-img').value = null;
+                                }}
+                                className="uil uil-times services__modal-close">
+                            </i>
+                            <div>
+                                Couldn't upload profile picture !! Please Retry 🥺.
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                {
+                    usernamePresent &&
+                    <div className="services__modal">
+                        <div className="services__modal-content login__error__modal-content">
+                            <h4 className="services__modal-title">Alakazam <br /> Guidelines</h4>
+                            <i
+                                onClick={() => {
+                                    setUsernamePresent(false);
+                                    setUsername("");
+                                }}
+                                className="uil uil-times services__modal-close">
+                            </i>
+                            <div>
+                                This username is already taken, choose a different one please 🥺.
+                            </div>
+                        </div>
+                    </div>
+                }
+                {
+                    emailPresent &&
+                    <div className="services__modal">
+                        <div className="services__modal-content login__error__modal-content">
+                            <h4 className="services__modal-title">Alakazam <br /> Guidelines</h4>
+                            <i
+                                onClick={() => {
+                                    setEmailPresent(false);
+                                    setEmail("");
+                                }}
+                                className="uil uil-times services__modal-close">
+                            </i>
+                            <div>
+                                This email is already in use, choose a different one please 🥺.
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                {
+                    error &&
+                    <div className="services__modal">
+                        <div className="services__modal-content login__error__modal-content">
+                            <h4 className="services__modal-title">Alakazam <br /> Guidelines</h4>
+                            <i
+                                onClick={() => {
+                                    setError(false);
+                                }}
+                                className="uil uil-times services__modal-close">
+                            </i>
+                            <div>
+                                Some error has occured, please retry.
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
                 <div className='p-4 card shadow-box-hig signincard'>
                     {
                         signUp ?
@@ -216,7 +335,7 @@ const New = () => {
                             {
                                 signUp ?
                                     <form onSubmit={signup}>
-                                        <input type="file" required id='profile-img' className="mb-2 border-primary custom-file-input w-full" />
+                                        <input type="file" name='image' accept='image/*' required id='profile-img' className="mb-2 border-primary custom-file-input w-full" />
                                         <input required 
                                         onChange={(event)=>{setUsername(event.target.value)}}
                                         type="text" placeholder="username" className="mb-2 input input-bordered w-full max-w-xs" />
