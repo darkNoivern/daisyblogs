@@ -230,10 +230,10 @@ const New = () => {
                                     :
                                     <form onSubmit={signin}>
                                         <input required
-                                        onChange={(event)=>{setEmail(event.target.value)}}
+                                        onChange={(event)=>{setEmail2(event.target.value)}}
                                         type="email" placeholder="abc@gmail.com" className="mb-2 input input-bordered w-full max-w-xs" />
                                         <input required
-                                        onChange={(event)=>{setEmail(event.target.value)}}
+                                        onChange={(event)=>{setPassword2(event.target.value)}}
                                         type="password" placeholder="password" className="mb-2 input input-bordered w-full max-w-xs" />
                                         <button className="btn w-full btn-primary">Sign-In</button>
                                     </form>

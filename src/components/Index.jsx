@@ -6,6 +6,8 @@ import Login from './Login';
 import NewCreate from './NewCreate';
 import Error from './Error';
 import Createblog from './Createblog';
+import Footer from './Footer';
+import Profile from './Profile';
 import Daisynavbar from './Daisynavbar';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
@@ -24,10 +26,12 @@ const Index = () => {
                     <Route path="/" element={<Home />} />
                     <Route path="/blogs" element={ <Blogs />} />
                     <Route exact path='/blog/:id' element={ <Blog />} />
+                    <Route exact path='/user/:id' element={<Profile /> } />
                     <Route path="/createblog" element={ <NewCreate />} />
                     <Route path="/login" element={<New />} />
                     <Route path='*' element={<Error />} />
                 </Routes>
+                <Footer />
             </Router>
         </>
     )

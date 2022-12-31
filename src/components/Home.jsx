@@ -39,7 +39,7 @@ const Home = () => {
         <>
             <div>
 
-                <div className="grid grid2 p-4">
+                <div className="grid grid2 mb-10 p-4">
                     <div className="home-text flexy">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, ex!
                     </div>
@@ -63,16 +63,37 @@ const Home = () => {
                             }
                         </div>
                     </div>
-                    <div>
-                        <div className="p-4 about-part-margin">
-                            <hr />
-                            <div className="flexy">
+                    <div className='p-4'>
+                        <div className="bg-base-200 p-4 about-part-margin rounded">
+
+                            <div className="text-600">
                                 About this site
                             </div>
                             <hr />
-                            <div className="flexy">
-                                daisyBlogs
+
+                            <div>
+                                <div className="flexy mt-4">
+                                    <img className="mask mask-circle" src="https://placeimg.com/160/160/arch" />
+                                </div>
+                                <div className="flexy mt-2 text-secondary bold">
+                                    daisyBlogs
+                                </div>
                             </div>
+
+                            <div>
+                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatibus, repellendus?
+                            </div>
+
+                            <div className='mt-4 uppercase small-text bold'>
+                                Categories
+                            </div>
+                            <div className="grid grid-permanent-2 mt-2">
+                                <div className="text-primary small-text bold uppercase">New Technologies</div>
+                                <div className="text-primary small-text bold uppercase">World Problems</div>
+                                <div className="text-primary small-text bold uppercase">Interviews</div>
+                                <div className="text-primary small-text bold uppercase">Project Collab</div>
+                            </div>
+
                         </div>
 
                     </div>

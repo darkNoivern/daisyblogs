@@ -21,7 +21,7 @@ const Daisynavbar = () => {
 
     return (
         <>
-            <div className="pb-20 flex w-full component-preview p-4 items-center justify-center gap-2 font-sans">
+            <div className="pb-20 flex w-full component-preview py-4 px-2 items-center justify-center gap-2 font-sans">
                 <Navbar>
                     <Navbar.Start>
                         <Dropdown className='dropdown-hover'>
@@ -110,14 +110,14 @@ const Daisynavbar = () => {
                                     <Button color="ghost" className="avatar" shape="circle">
                                         <div className="w-10 rounded-full">
                                             {/* <img src="https://api.lorem.space/image/face?hash=33791" /> */}
-                                            <img src={currentUser.photoURL} />
+                                            <img loading='lazy' src={currentUser.photoURL} />
                                         </div>
                                     </Button>
                                     <Dropdown.Menu className="w-52 width13 menu-compact">
                                         <li>
-                                            <NavLink exact to='/profile' className="justify-between">
+                                            <NavLink exact to={`/user/${currentUser.uid}`} className="justify-between">
                                                 Profile
-                                                <span className="badge pb-1">New</span>
+                                                <span className="badge pb-1 badge-secondary">New</span>
                                             </NavLink>
                                         </li>
                                         {/* <Dropdown.Item>Settings</Dropdown.Item> */}

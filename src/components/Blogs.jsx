@@ -45,15 +45,15 @@ const Blogs = () => {
                                         </figure>
                                         <div className="card-body">
                                             <h2 className="card-title">
-                                                {blog.blogTitle}
-                                                {
+                                                {blog.blogTitle.slice(0,20)}
+                                                {/* {
                                                     index === 0 ? 
                                                 <div className="badge badge-secondary">NEW</div>
                                                 :
                                                 <></>
-                                                }
+                                                } */}
                                             </h2>
-                                            <p>{blog.blogAbout}</p>
+                                            <p>{blog.blogAbout.slice(0,50)}</p>
                                             <div className="card-actions justify-between">
                                                 <Link 
                                                 exact to={`/blog/${blog.id}`}
