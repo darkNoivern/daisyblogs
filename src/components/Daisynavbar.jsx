@@ -110,7 +110,7 @@ const Daisynavbar = () => {
                                     <Button color="ghost" className="avatar" shape="circle">
                                         <div className="w-10 rounded-full">
                                             {/* <img src="https://api.lorem.space/image/face?hash=33791" /> */}
-                                            <img loading='lazy' src={currentUser.photoURL} />
+                                            <img className='profile-image-new' loading='lazy' src={currentUser.photoURL} />
                                         </div>
                                     </Button>
                                     <Dropdown.Menu className="w-52 width13 menu-compact">

@@ -182,6 +182,7 @@ const NewCreate = () => {
                     </label>
                     <Input
                     required
+                    value={blogTitle}
                     onChange={(event)=>{setBlogTitle(event.target.value)}} 
                     className='mb-4 w-full' />
 
@@ -190,6 +191,7 @@ const NewCreate = () => {
                     </label>
                     <Input
                     required
+                    value={blogAbout}
                     onChange={(event)=>{setBlogAbout(event.target.value)}} 
                     className='mb-4 w-full' />
 

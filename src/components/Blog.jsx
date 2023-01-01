@@ -3,7 +3,9 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useParams } from 'react-router-dom'
 import { db } from "../firebase.config";
-import { doc, deleteDoc, collection, onSnapshot, updateDoc, arrayUnion } from 'firebase/firestore';
+import { doc, deleteDoc, collection, onSnapshot, updateDoc, arrayUnion,
+    query,
+    orderBy, } from 'firebase/firestore';
 import { Card } from 'react-daisyui';
 import '../styles/blog.css'
 import { AuthContext } from '../context/AuthContext';
@@ -18,6 +20,8 @@ const Blog = () => {
     const [blog, setBlog] = useState([]);
     const [blogs, setBlogs] = useState([]);
     const blogsCollectionRef = collection(db, "blogs");
+    const sortRef = query(blogsCollectionRef, orderBy('createdAt', 'desc'));
+
 
     const [comment, setComment] = useState("");
     const handleChange = (event) => {
@@ -26,7 +30,7 @@ const Blog = () => {
     }
 
     useEffect(() => {
-        onSnapshot(blogsCollectionRef, (snapshot) => {
+        onSnapshot(sortRef, (snapshot) => {
             setBlogs(
                 snapshot.docs.map((doc) => {
                     return {
@@ -36,7 +40,7 @@ const Blog = () => {
                 })
             );
         });
-    }, []);
+    }, [currentUser]);
 
     const postComment = () => {
         const thisDocRef = doc(db, "blogs", id);
@@ -196,8 +200,9 @@ const Blog = () => {
                                                         return (
                                                             <>
                                                                 <div className="grid recent-blogs-grid bg-base-300 p-2">
-                                                                    <div>
-                                                                        <img className="mask mask-circle" src={element.blogImage} />
+                                                                    <div className='image-cropper'>
+                                                                        {/* <img className="mask mask-circle" src={element.blogImage} /> */}
+                                                                        <img src={element.blogImage} className='my-picture' alt="" />
                                                                     </div>
                                                                     <div>
                                                                         <div className='flex justify-between small-text bold'>
@@ -231,16 +236,24 @@ const Blog = () => {
                                             </div>
                                             <hr />
                                             <div className='hover-primary px-4 py-2 mt-2 rounded-lg hover:bg-base-300'>
-                                                New Technologies
+                                                <Link exact to={`/category/new_technologies`}>
+                                                    New Technologies
+                                                </Link>
                                             </div>
                                             <div className='hover-primary px-4 py-2 mt-2 rounded-lg hover:bg-base-300'>
-                                                World Problems
+                                                <Link exact to={`/category/world_problems`}>
+                                                    World Problems
+                                                </Link>
                                             </div>
                                             <div className='hover-primary px-4 py-2 mt-2 rounded-lg hover:bg-base-300'>
-                                                Interviews
+                                                <Link exact to={`/category/interviews`}>
+                                                    Interviews
+                                                </Link>
                                             </div>
                                             <div className='hover-primary px-4 py-2 mt-2 rounded-lg hover:bg-base-300'>
-                                                Project Collab
+                                                <Link exact to={`/category/project_collab`}>
+                                                    Project Collab
+                                                </Link>
                                             </div>
                                         </div>
 
