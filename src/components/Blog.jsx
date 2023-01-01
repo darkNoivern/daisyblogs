@@ -202,7 +202,7 @@ const Blog = () => {
                                                                     <div>
                                                                         <div className='flex justify-between small-text bold'>
                                                                             <span>
-                                                                                <Link className='hover-secondary bold' exact to={`/user/${comment.commentAuthorName}`}>
+                                                                                <Link className='hover-secondary bold' exact to={`/user/${element.blogAuthorName}`}>
                                                                                     {element.blogAuthorName}
                                                                                 </Link>
                                                                             </span>
