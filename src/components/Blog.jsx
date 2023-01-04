@@ -3,9 +3,11 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useParams } from 'react-router-dom'
 import { db } from "../firebase.config";
-import { doc, deleteDoc, collection, onSnapshot, updateDoc, arrayUnion,
+import {
+    doc, deleteDoc, collection, onSnapshot, updateDoc, arrayUnion,
     query,
-    orderBy, } from 'firebase/firestore';
+    orderBy,
+} from 'firebase/firestore';
 import { Card } from 'react-daisyui';
 import '../styles/blog.css'
 import { AuthContext } from '../context/AuthContext';
@@ -105,7 +107,7 @@ const Blog = () => {
                                 </div>
 
                                 {/* GRID SEPARATION */}
-                                <div className="grid gap1 grid21">
+                                <div className="grid gap1 blog-grid">
                                     <div>
 
                                         {/* MAIN BLOG IN WINDOW */}
@@ -188,7 +190,7 @@ const Blog = () => {
 
                                     </div>
 
-                                    <div>
+                                    <div className='blog-right-custom-grid grid height-fit-content'>
                                         <div className='bg-base-200 p-4 rounded'>
                                             <div className="text-600">
                                                 Recent Posts
@@ -196,7 +198,7 @@ const Blog = () => {
                                             <hr />
                                             <div>
                                                 {
-                                                    blogs.map((element, index) => {
+                                                    blogs.slice(0,5).map((element, index) => {
                                                         return (
                                                             <>
                                                                 <div className="grid recent-blogs-grid bg-base-300 p-2">
@@ -204,20 +206,19 @@ const Blog = () => {
                                                                         {/* <img className="mask mask-circle" src={element.blogImage} /> */}
                                                                         <img src={element.blogImage} className='my-picture' alt="" />
                                                                     </div>
-                                                                    <div>
-                                                                        <div className='flex justify-between small-text bold'>
-                                                                            <span>
-                                                                                <Link className='hover-secondary bold' exact to={`/user/${element.blogAuthorName}`}>
-                                                                                    {element.blogAuthorName}
-                                                                                </Link>
-                                                                            </span>
-                                                                            <span>
-                                                                                {moment(element.createdAt.toDate()).calendar()}
-                                                                            </span>
+                                                                    <div className='ml-2'>
+                                                                        <div className='small-text bold'>
+                                                                            <Link className='hover-secondary bold' exact to={`/user/${element.blogAuthorName}`}>
+                                                                                {element.blogAuthorName}
+                                                                            </Link>
                                                                         </div>
                                                                         <div className='hover-primary'>
-
                                                                             {element.blogTitle}
+                                                                        </div>
+                                                                        <div>
+                                                                            <time className='small-text'>
+                                                                                {moment(element.createdAt.toDate()).calendar()}
+                                                                            </time>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -229,8 +230,7 @@ const Blog = () => {
                                             </div>
                                         </div>
 
-
-                                        <div className='bg-base-200 mt-5 p-4 rounded'>
+                                        <div className='bg-base-200 category-display p-4 rounded'>
                                             <div className="text-600">
                                                 Categories
                                             </div>

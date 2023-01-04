@@ -133,6 +133,18 @@
     padding-left: 3rem;
 }
 
+.smeargle iframe{
+    width: 100%;
+    max-width: 30rem;
+    aspect-ratio: 16 / 9;
+}
+
+.comment-smeargle iframe{
+    width: 100%;
+    max-width: 30rem;
+    aspect-ratio: 16 / 9;
+}
+
 .smeargle ol {
     list-style: decimal;
     padding-left: 3rem;
@@ -191,9 +203,46 @@
 }
 
 .recent-blogs-grid {
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 5rem auto;
     margin-top: 2rem;
+    gap: 0.5rem;
 }
+
+.blog-right-custom-grid{
+    grid-template-columns: repeat(1, 1fr);
+}
+.category-display{
+    margin-top: 2.5rem;
+}
+
+.height-fit-content{
+    height: fit-content;
+}
+.ml-2 {
+    margin-left: 0.5rem/* 8px */;
+}
+@media screen and (min-width: 768px) {
+    .blog-right-custom-grid{
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .category-display{
+        margin-top: 0;
+    }
+    
+}
+
+
+@media screen and (min-width: 1024px) {
+    .blog-right-custom-grid{
+        grid-template-columns: repeat(1, 1fr);
+    }
+    
+.category-display{
+    margin-top: 2.5rem;
+}
+
+}
+
 
 .chat {
     margin-top: 1.5rem;

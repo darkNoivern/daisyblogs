@@ -40,7 +40,7 @@ const Home = () => {
         <>
             <div>
 
-                <div className="grid grid2 mb-10 p-4">
+                <div className="grid grid2 gap1 mb-10 p-4">
                     <div className="home-text flexy">
                     Everyone you will ever meet knows something you don't !!
                     </div>
@@ -49,11 +49,11 @@ const Home = () => {
                     </div>
                 </div>
 
-                <div className="grid grid21">
+                <div className="grid blog-grid">
                     <div>
                         <div className='p-4'>
                             {
-                                blogs.map((blog) => {
+                                blogs.slice(0,5).map((blog) => {
                                     return (
                                         <>
                                             <HomeCard blog={blog} />
@@ -64,7 +64,7 @@ const Home = () => {
                             }
                         </div>
                     </div>
-                    <div className='p-4'>
+                    <div className='p-4 blog-right-custom-grid grid height-fit-content'>
                         <div className="bg-base-200 p-4 about-part-margin rounded">
 
                             <div className="text-600">
@@ -114,6 +114,7 @@ const Home = () => {
                             </div>
 
                         </div>
+                        <div></div>
 
                     </div>
                 </div>

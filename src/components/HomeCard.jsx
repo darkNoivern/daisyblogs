@@ -37,10 +37,9 @@ const HomeCard = (props) => {
                         {props.blog.blogAbout}
                     </div>
                     <div className='home-blog-footer'>
-                        <span>
-
+                        <span className='mr-2'>
                             By 
-                        <Link exact to={`/user/${props.blog.blogAuthorName}`} className='ml-2 bold hover-secondary'>
+                        <Link exact to={`/user/${props.blog.blogAuthorName}`} className='ml-1 bold hover-secondary'>
                             {props.blog.blogAuthorName}
                         </Link>
                         </span>
