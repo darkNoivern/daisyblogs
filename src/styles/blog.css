@@ -1,14 +1,11 @@
 .window-min-height {
     min-height: 85vh !important;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 .rounded-image {
     border-radius: 1rem;
-}
-
-.smeargle {
-    color: black;
-    overflow: hidden;
 }
 
 .comment-smeargle {
