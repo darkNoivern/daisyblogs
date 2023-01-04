@@ -5,10 +5,11 @@
 .rounded-image {
     border-radius: 1rem;
 }
-/* 
+
 .smeargle {
     color: black;
-} */
+    overflow: hidden;
+}
 
 .comment-smeargle {
     color: black;
