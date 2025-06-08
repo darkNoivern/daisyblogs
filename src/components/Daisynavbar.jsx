@@ -6,7 +6,7 @@ import { Navbar, Button, Dropdown, Indicator, Badge, Theme } from 'react-daisyui
 import { auth } from '../firebase.config'
 import { signOut } from "firebase/auth";
 
-const Daisynavbar = () => {
+const DaisyNavbar = () => {
 
     const { currentUser } = useContext(AuthContext);
     const [checkBox, setCheckBox] = useState(true);
@@ -115,7 +115,7 @@ const Daisynavbar = () => {
                                         <li>
                                             <NavLink exact to={`/user/${currentUser.displayName}`} className="justify-between">
                                                 Profile
-                                                <span className="badge pb-1 badge-secondary">New</span>
+                                                {/* <span className="badge pb-1 badge-secondary">New</span> */}
                                             </NavLink>
                                         </li>
                                         {/* <Dropdown.Item>Settings</Dropdown.Item> */}
@@ -152,4 +152,4 @@ const Daisynavbar = () => {
     )
 }
 
-export default Daisynavbar
+export default DaisyNavbar

@@ -49,8 +49,10 @@ const Profile = () => {
         });
     }, [currentUser]);
 
-    const themes = ["halloween", "cmyk", "caramellatte", "bumblebee"];
-    const colors = ["orange", "cyan", "brown", "gold"];
+    const darkthemes = ["halloween", "dracula", "sunset", "dim"];
+    const lightthemes = ["cmyk", "valentine", "lemonade", "pastel"];
+    const darkcolors = ["orange", "grey", "lightcoral", "plum"];
+    const lightcolors = ["pink", "cyan", "lime", "lightgreen"];
 
     useEffect(() => {
         onSnapshot(sortRef, (snapshot) => {
@@ -74,7 +76,7 @@ const Profile = () => {
             {
                 user.length > 0 ?
                     <>
-                        <div className="grid grid-cols-2">
+                        <div className="grid profile-grid">
                             <div className='flexy p-4'>
                                 <div className="avatar online">
                                     <div className="w16 rounded-full">
@@ -82,36 +84,70 @@ const Profile = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div>
-
-                                <div className="flexy text-primary bold">
-                                    {user[0].displayName}
-                                </div>
-                                {
-                                    currentUser.displayName === id
-                                        ?
-                                        <>
-                                            <div className="flexy text-secondary bold">
-                                                {user[0].email}
-                                            </div>
-                                        </> : <></>
-                                }
+                            <div className='profile-table-container'>
+                                <table className="table">
+                                    <tr>
+                                        <td>Username</td>
+                                        <td className='flexy text-primary'>{user[0].displayName}</td>
+                                    </tr>
+                                    {
+                                        currentUser.displayName === id
+                                            ?
+                                            <>
+                                                <tr>
+                                                    <td>EmailId</td>
+                                                    <td className='flexy text-secondary'>{user[0].email}</td>
+                                                </tr>
+                                            </> : <></>
+                                    }
+                                </table>
                             </div>
                         </div>
-                        {/* <div className="mt-10 flexy">
-                            <div className="ubuntu-400 your-blogs-heading ml-4">
+
+                        
+                        {/* 
+                        
+                        THEME SECTION
+                        
+                        <div className="mt-10">
+                            <div className="ubuntu-400 your-blogs-heading ml-4 flexy">
                                 Choose Themes
                             </div>
-                            <div className="flexy">
-                                {
-                                    themes.map((element, index) => {
-                                        return <button 
-                                        onClick={() => {
-                                            document.documentElement.setAttribute('data-theme', `${themes[index]}`)
-                                        }}
-                                        style={{backgroundColor: `${colors[index]}`}} className='theme-button'></button>
-                                    })
-                                }
+
+                            <div className='flexy mt-10'>
+                                <table className="table">
+                                    <tr>
+                                        <td>Dark Theme</td>
+                                        {
+                                            darkthemes.map((element, index) => {
+                                                return <td>
+                                                    <button
+                                                        onClick={() => {
+                                                            document.documentElement.setAttribute('data-theme', `${darkthemes[index]}`)
+                                                        }}
+                                                        style={{ backgroundColor: `${darkcolors[index]}` }} className='theme-button'></button>
+                                                    
+                                                </td>
+                                            })
+                                        }
+                                    </tr>
+
+                                    <tr>
+                                        <td>Light Theme</td>
+                                        {
+                                            lightthemes.map((element, index) => {
+                                                return <td>
+                                                    <button
+                                                        onClick={() => {
+                                                            document.documentElement.setAttribute('data-theme', `${lightthemes[index]}`)
+                                                        }}
+                                                        style={{ backgroundColor: `${lightcolors[index]}` }} className='theme-button'></button>
+                                                </td>
+                                            })
+                                        }
+                                    </tr>
+
+                                </table>
 
                             </div>
                         </div> */}

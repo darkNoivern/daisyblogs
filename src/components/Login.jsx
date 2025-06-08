@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../firebase.config";
+import { auth, db, storage } from "../firebase.config";
 import { useNavigate } from "react-router-dom";
 import {
     collection,
@@ -8,9 +8,16 @@ import {
     doc,
     setDoc,
 } from "firebase/firestore";
-import '../styles/login.css'
+import '../styles/login.css';
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { AuthContext } from '../context/AuthContext';
+
 
 const Login = () => {
+
+    const {currentUser} = useContext(AuthContext)
+
+    const [signUp, setSignUp] = useState(true);
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -23,16 +30,19 @@ const Login = () => {
     const [usernamePresent, setUsernamePresent] = useState(false);
     const [emailPresent, setEmailPresent] = useState(false);
     const [error, setError] = useState(false);
+    const [picError, setPicError] = useState(false);
+    const [fillError, setFillError] = useState(false);
 
     const [userlist, setUserlist] = useState([]);
 
     const navigate = useNavigate();
 
     function isAlphanumeric(str) {
-        return /^[a-zA-Z0-9]+$/i.test(str)
+        return /^[a-z0-9_]+$/i.test(str)
     }
 
     const usersCollectionRef = collection(db, "users");
+
     useEffect(() => {
         onSnapshot(usersCollectionRef, (snapshot) => {
 
@@ -45,63 +55,109 @@ const Login = () => {
             setUserlist(result);
             // console.log(result)
         });
-    }, []);
+    }, [currentUser]);
 
     const signup = (event) => {
 
         event.preventDefault();
 
-        if (!isAlphanumeric(username)) {
-            setIllegalUsername(true);
-            return;
-        }
-        
-        const checkUsernamePresent = userlist.find((individual) => {
-            return (individual.displayName === username);
-        })
-        if (checkUsernamePresent !== undefined) {  //  USERNAME FOUND
-            setUsernamePresent(true);
-            return;
+        const imageAsFile = event.target[0].files[0]
+        const file = event.target[0].files[0];
+        // event.preventDefault()
+
+        console.log('start of upload')
+
+        // async magic goes here...
+        if (imageAsFile === '') {
+            console.error(`not an image, the image file is a ${typeof (imageAsFile)}`)
         }
 
-        const checkEmailPresent = userlist.find((individual) => {
-            return (individual.email === email);
-        })
-        if (checkEmailPresent !== undefined) {  //  USERNAME FOUND
-            setEmailPresent(true);
-            return;
-        }
+        const storageRef = ref(storage, `/profile/${imageAsFile.name}`)
+
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        uploadTask.on('state_changed',
+            (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+                switch (snapshot.state) {
+                    case 'paused':
+                        console.log('Upload is paused');
+                        break;
+                    case 'running':
+                        console.log('Upload is running');
+                        break;
+                }
+            },
+            (error) => {
+                console.log(error);
+                setPicError(true);
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    console.log('File available at', downloadURL);
+
+                    if (!isAlphanumeric(username)) {
+                        setIllegalUsername(true);
+                        return;
+                    }
+
+                    const checkUsernamePresent = userlist.find((individual) => {
+                        return (individual.displayName === username);
+                    })
+                    if (checkUsernamePresent !== undefined) {  //  USERNAME FOUND
+                        setUsernamePresent(true);
+                        return;
+                    }
+
+                    const checkEmailPresent = userlist.find((individual) => {
+                        return (individual.email === email);
+                    })
+                    if (checkEmailPresent !== undefined) {  //  USERNAME FOUND
+                        setEmailPresent(true);
+                        return;
+                    }
 
 
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((result) => {
-                // Signed in 
-                const user = result.user;
-                updateProfile(result.user, {
-                    displayName: username,
+                    createUserWithEmailAndPassword(auth, email, password)
+                        .then((result) => {
+                            // Signed in 
+                            const user = result.user;
+                            updateProfile(result.user, {
+                                displayName: username,
+                                photoURL: downloadURL,
+                            });
+
+                            setDoc(doc(db, "users", result.user.uid), {
+                                uid: result.user.uid,
+                                displayName: username,
+                                email,
+                                blogs: [],
+                                photoURL: downloadURL,
+                            });
+
+                            navigate("/");
+                            // ...
+                        })
+                        .catch((error) => {
+                            setError(true);
+                            setUsername("");
+                            setPassword("");
+                            setEmail("");
+                            return;
+                            const errorCode = error.code;
+                            const errorMessage = error.message;
+                            console.log(errorCode, errorMessage);
+                            // ..
+                        });
+
+                    document.querySelector('#profile-img').value = null;
                 });
+            }
+        );
 
-                setDoc(doc(db, "users", result.user.uid), {
-                    uid: result.user.uid,
-                    displayName: username,
-                    email,
-                    notebooks: [],
-                });
 
-                navigate("/");
-                // ...
-            })
-            .catch((error) => {
-                setError(true);
-                setUsername("");
-                setPassword("");
-                setEmail("");
-                return;
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode, errorMessage);
-                // ..
-            });
+
     }
 
     const signin = (event) => {
@@ -126,13 +182,30 @@ const Login = () => {
 
     return (
         <>
+            <div className="flexy p-4">
+            {
+                    fillError && 
+                    <div className="services__modal">
+                        <div className="services__modal-content login__error__modal-content">
+                            <h4 className="services__modal-title">Alakazam <br /> Guidelines</h4>
+                            <i
+                                onClick={() => {
+                                    setFillError(false);
+                                }}
+                                className="uil uil-times services__modal-close">
+                            </i>
+                            <div>
+                                Please Fill out all the fields
+                            </div>
+                        </div>
+                    </div>
+                }
 
-            <section className="section login__page flexy">
-                {
+            {
                     illegalUsername &&
                     <div className="services__modal">
                         <div className="services__modal-content login__error__modal-content">
-                            <h4 className="services__modal-title">Ralts <br /> Guidelines</h4>
+                            <h4 className="services__modal-title">Alakazam <br /> Guidelines</h4>
                             <i
                                 onClick={() => {
                                     setIllegalUsername(false);
@@ -141,7 +214,26 @@ const Login = () => {
                                 className="uil uil-times services__modal-close">
                             </i>
                             <div>
-                                Username should only contain a-z, A-Z, 0-9 and no spaces.
+                                Username should only contain a-z, 0-9 and _ with no spaces.
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                {
+                    picError && 
+                    <div className="services__modal">
+                        <div className="services__modal-content login__error__modal-content">
+                            <h4 className="services__modal-title">Alakazam <br /> Guidelines</h4>
+                            <i
+                                onClick={() => {
+                                    setPicError(false);
+                                    document.querySelector('#profile-img').value = null;
+                                }}
+                                className="uil uil-times services__modal-close">
+                            </i>
+                            <div>
+                                Couldn't upload profile picture !! Please Retry 🥺.
                             </div>
                         </div>
                     </div>
@@ -151,7 +243,7 @@ const Login = () => {
                     usernamePresent &&
                     <div className="services__modal">
                         <div className="services__modal-content login__error__modal-content">
-                            <h4 className="services__modal-title">Ralts <br /> Guidelines</h4>
+                            <h4 className="services__modal-title">Alakazam <br /> Guidelines</h4>
                             <i
                                 onClick={() => {
                                     setUsernamePresent(false);
@@ -169,7 +261,7 @@ const Login = () => {
                     emailPresent &&
                     <div className="services__modal">
                         <div className="services__modal-content login__error__modal-content">
-                            <h4 className="services__modal-title">Ralts <br /> Guidelines</h4>
+                            <h4 className="services__modal-title">Alakazam <br /> Guidelines</h4>
                             <i
                                 onClick={() => {
                                     setEmailPresent(false);
@@ -188,7 +280,7 @@ const Login = () => {
                     error &&
                     <div className="services__modal">
                         <div className="services__modal-content login__error__modal-content">
-                            <h4 className="services__modal-title">Ralts <br /> Guidelines</h4>
+                            <h4 className="services__modal-title">Alakazam <br /> Guidelines</h4>
                             <i
                                 onClick={() => {
                                     setError(false);
@@ -203,71 +295,72 @@ const Login = () => {
                 }
 
 
-                <div className="login__main shadow-box-hig border-black">
-                    <input
-                        onClick={() => {
-                            setEmail("");
-                            setEmail2("");
-                            setUsername("");
-                            setPassword("");
-                            setPassword2("");
-                        }}
-                        type="checkbox" id="chk" aria-hidden="true" />
-                    <div className="signup">
-                        <form
-                            onSubmit={signup}
+                <div className='p-4 card shadow-box-hig signincard'>
+                    {
+                        signUp ?
+                            <>
+                                <div className="grid p-4 grid-permanent-2">
+                                    <div
+                                        onClick={() => { setSignUp(true) }}
+                                        className={`flexy p-2 bg-primary login-tab text-black`}>
+                                        Sign-Up
+                                    </div>
+                                    <div
+                                        onClick={() => { setSignUp(false) }}
+                                        className="flexy login-tab">
+                                        Sign-In
+                                    </div>
+                                </div>
+                            </>
+                            :
+                            <>
+                                <div className="grid p-4 grid-permanent-2">
 
-                            className='services__form'>
-                            <label className='login__label' htmlFor="chk" aria-hidden="true">Sign Up</label>
-                            <div className="flexy">
-                                <input
-                                    value={username}
-                                    onChange={(event) => { setUsername(event.target.value); }}
-                                    className='login__input border-gray-600' type="text" name="txt" placeholder='username' required="" />
-                            </div>
-                            {/* <div className="flexy"> */}
-                            <div className="form-control w-full max-w-xs">
+                                    <div
+                                        onClick={() => { setSignUp(true) }}
+                                        className={`flexy login-tab`}>
+                                        Sign-Up
+                                    </div>
+                                    <div
+                                        onClick={() => { setSignUp(false) }}
+                                        className={`flexy p-2 bg-primary login-tab text-black`}>
+                                        Sign-In
+                                    </div>
 
-                            <input type="file" className="file-input file-input-bordered file-input-primary" />
-                            </div>
-                            {/* </div> */}
-                            <div className="flexy">
-                                <input
-                                    value={email}
-                                    onChange={(event) => { setEmail(event.target.value); }}
-                                    className='login__input' type="email" name="email" placeholder='email' required="" />
-                            </div>
-                            <div className="flexy">
-                                <input
-                                    value={password}
-                                    onChange={(event) => { setPassword(event.target.value); }}
-                                    className='login__input' type="password" name="pswd" placeholder='password' required="" />
-                            </div>
-                            <button
-                                className='btn btn-primary btn-sm login__button flexy'>Sign Up</button>
-                        </form>
-                    </div>
-                    <div className="login bg-primary">
-                        <form onSubmit={signin}
-                            className='services__form'>
-                            <label className='login__label login-label-text' htmlFor="chk" aria-hidden="true">Login</label>
-                            <div className="flexy">
-                                <input
-                                    value={email2}
-                                    onChange={(event) => { setEmail2(event.target.value); }}
-                                    className='login__input' type="email" name="email" placeholder='email' required="" />
-                            </div>
-                            <div className="flexy">
-                                <input
-                                    value={password2}
-                                    onChange={(event) => { setPassword2(event.target.value); }}
-                                    className='login__input' type="password" name="pswd" placeholder='password' required="" />
-                            </div>
-                            <button className='login__button btn text-white glass btn-sm flexy'>Login</button>
-                        </form>
+                                </div>
+                            </>
+                    }
+                    <div className="tabsContent p-4 h-full bg-neutral">
+                        <div className='flexy h-full'>
+                            {
+                                signUp ?
+                                    <form onSubmit={signup}>
+                                        <input type="file" name='image' accept='image/*' required id='profile-img' className="mb-2 border-primary custom-file-input w-full" />
+                                        <input required 
+                                        onChange={(event)=>{setUsername(event.target.value)}}
+                                        type="text" placeholder="username" className="mb-2 input input-bordered w-full max-w-xs" />
+                                        <input  required
+                                        onChange={(event)=>{setEmail(event.target.value)}}
+                                        type="email" placeholder="abc@gmail.com" className="mb-2 input input-bordered w-full max-w-xs" />
+                                        <input required
+                                        onChange={(event)=>{setPassword(event.target.value)}} type="password" placeholder="password" className="mb-2 input input-bordered w-full max-w-xs" />
+                                        <button className="btn w-full btn-primary">Sign-Up</button>
+                                    </form>
+                                    :
+                                    <form onSubmit={signin}>
+                                        <input required
+                                        onChange={(event)=>{setEmail2(event.target.value)}}
+                                        type="email" placeholder="abc@gmail.com" className="mb-2 input input-bordered w-full max-w-xs" />
+                                        <input required
+                                        onChange={(event)=>{setPassword2(event.target.value)}}
+                                        type="password" placeholder="password" className="mb-2 input input-bordered w-full max-w-xs" />
+                                        <button className="btn w-full btn-primary">Sign-In</button>
+                                    </form>
+                            }
+                        </div>
                     </div>
                 </div>
-            </section>
+            </div>
         </>
     )
 }

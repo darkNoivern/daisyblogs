@@ -11,7 +11,20 @@
 }
 
 .theme-button{
-    margin-left: 1rem;
+    /* margin-left: 1rem; */
     padding: 1rem;
     border-radius: 1rem;
+}
+
+.profile-grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+.ml-2{
+    margin-left:  2rem;
+}
+
+.profile-table-container{
+    display: flex;
+    align-items: center;
 }

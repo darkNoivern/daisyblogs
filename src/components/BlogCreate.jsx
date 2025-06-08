@@ -8,7 +8,7 @@ import { doc, setDoc, addDoc, collection, serverTimestamp, } from "firebase/fire
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { AuthContext } from '../context/AuthContext'
 
-const NewCreate = () => {
+const BlogCreate = () => {
 
     const { currentUser } = useContext(AuthContext);
     const [blogCategory, setBlogCategory] = useState("");
@@ -69,7 +69,6 @@ const NewCreate = () => {
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                     console.log('File available at', downloadURL);
-
 
                     addDoc(blogsCollectionRef, {
                         blogCategory: blogCategory,
@@ -246,4 +245,4 @@ const formats = [
     'link', 'image', 'video', 'code-block'
 ]
 
-export default NewCreate
+export default BlogCreate
