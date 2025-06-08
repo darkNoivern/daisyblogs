@@ -62,18 +62,60 @@ const Blog = () => {
         setComment("");
     }
 
+    const upvote = () => {
+        const thisDocRef = doc(db, "blogs", id);
 
+        const vote = blog[0].blogUpvotes.filter(vote => vote.upVoteUid == currentUser.uid);
+        const vote2 = blog[0].blogDownvotes.filter(vote => vote.downVoteUid != currentUser.uid);
 
+        if(vote.length > 0){
+            //continue;
+        }
+        else{
+            const date = new Date();
+            const newObj = {
+                upVoteUid: currentUser.uid,
+                upVoteEmail: currentUser.email,
+                upVoteName: currentUser.displayName,
+                upVoteTime: date,
+            }
+            updateDoc(thisDocRef, {
+                blogUpvotes: arrayUnion(newObj),
+                blogDownvotes: vote2,
+            });
+        }
+    }
+
+    const downvote = () => {
+        const thisDocRef = doc(db, "blogs", id);
+
+        const vote = blog[0].blogUpvotes.filter(vote => vote.upVoteUid != currentUser.uid);
+        const vote2 = blog[0].blogDownvotes.filter(vote => vote.downVoteUid == currentUser.uid);
+
+        if(vote2.length > 0){
+            //continue;
+        }
+        else{
+            const date = new Date();
+            const newObj = {
+                downVoteUid: currentUser.uid,
+                downVoteEmail: currentUser.email,
+                downVoteName: currentUser.displayName,
+                downVoteTime: date,
+            }
+            updateDoc(thisDocRef, {
+                blogUpvotes: vote,
+                blogDownvotes: arrayUnion(newObj),
+            });
+        }
+    }
 
     useEffect(() => {
-        if (blogs !== []) {
-            const obj = blogs.filter((blog, index) => {
-                return (blog.id === id.toString());
-            });
+        if (blogs.length > 0) {
+            const obj = blogs.filter(blog => blog.id === id.toString());
             setBlog(obj);
-            console.log(obj[0])
         }
-    }, [blogs])
+    }, [blogs]);
 
     return (
         <>
@@ -117,7 +159,28 @@ const Blog = () => {
                                                 <div className='p-4 smeargle'
                                                     dangerouslySetInnerHTML={{ __html: blog[0].blogDescription }}
                                                 />
+
                                             </div>
+                                        </div>
+
+                                        <div className='upvote-container'>
+                                            <button onClick={()=>{
+                                                upvote();
+                                            }} className="btn-success upvote-button">Like <i class="uil uil-check"></i></button>
+                                            <span className='like-content sm-content ubuntu-400'>
+                                                {`${blog[0].blogUpvotes.length} Likes`}
+                                            </span>
+
+                                            <button onClick={()=>{
+                                                downvote();
+                                            }} className="btn-error upvote-button">Dislike <i class="uil uil-times"></i></button>
+                                            <span className='like-content sm-content ubuntu-400'>
+                                                {`${blog[0].blogDownvotes.length} Dislikes`}
+                                            </span>
+
+                                            <span className='comment-content sm-content ubuntu-400'>
+                                                {`${blog[0].blogComments.length} Comments`}
+                                            </span>
                                         </div>
 
                                         {/* REPLY SECTION */}
@@ -198,7 +261,7 @@ const Blog = () => {
                                             <hr />
                                             <div>
                                                 {
-                                                    blogs.slice(0,5).map((element, index) => {
+                                                    blogs.slice(0, 5).map((element, index) => {
                                                         return (
                                                             <>
                                                                 <div className="grid recent-blogs-grid bg-base-300 p-2">

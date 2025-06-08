@@ -5,7 +5,6 @@ import Blogs from './Blogs';
 import Login from './Login';
 import NewCreate from './NewCreate';
 import Error from './Error';
-import Createblog from './Createblog';
 import Footer from './Footer';
 import Profile from './Profile';
 import Daisynavbar from './Daisynavbar';

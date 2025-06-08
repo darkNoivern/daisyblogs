@@ -10,6 +10,7 @@ import {
 } from "firebase/firestore";
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import BlogCard from './BlogCard';
 
 const Category = () => {
 
@@ -30,20 +31,20 @@ const Category = () => {
                 };
             })
             console.log(arr, id)
-            arr.forEach((element,index)=>{
+            arr.forEach((element, index) => {
                 console.log(element.blogCategory)
             })
             const filteredArr = arr.filter((element, index) => {
-                if(id=== 'new_technologies' && element.blogCategory === 'New Technologies'){
+                if (id === 'new_technologies' && element.blogCategory === 'New Technologies') {
                     return true;
                 }
-                else if(id=== 'world_problems' && element.blogCategory === 'World Problems'){
+                else if (id === 'world_problems' && element.blogCategory === 'World Problems') {
                     return true;
                 }
-                else if(id=== 'interviews' && element.blogCategory === 'Interviews'){
+                else if (id === 'interviews' && element.blogCategory === 'Interviews') {
                     return true;
                 }
-                else if(id=== 'project_collab' && element.blogCategory === 'Project Collab'){
+                else if (id === 'project_collab' && element.blogCategory === 'Project Collab') {
                     return true;
                 }
                 else {
@@ -61,43 +62,16 @@ const Category = () => {
             {
                 (arr.includes(id)) ?
                     <>
-                    <div className="card-setter">
-                {
-                    blogs.map((blog, index) => {
-                        return (
-                            <>
-                                <div key={index} className='cards flexy'>
-                                    <div className="card shadow-box-hig custom-card bg-base-100 shadow-xl">
-                                        <figure>
-                                            <img src={blog.blogImage} className="image-fixed-height" alt="blog image" />
-                                        </figure>
-                                        <div className="card-body">
-                                            <h2 className="card-title">
-                                                {blog.blogTitle.slice(0,20)}
-                                                {/* {
-                                                    index === 0 ? 
-                                                <div className="badge badge-secondary">NEW</div>
-                                                :
-                                                <></>
-                                                } */}
-                                            </h2>
-                                            <p>{blog.blogAbout.slice(0,50)}</p>
-                                            <div className="card-actions justify-between">
-                                                <Link 
-                                                exact to={`/blog/${blog.id}`}
-                                                className="badge p-4 badge-primary">Open Blog</Link>
-                                                <div className='text-primary card-moment'>
-                                                    {moment(blog.createdAt.toDate()).calendar()}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </>
-                        )
-                    })
-                }
-            </div>
+                        <div className="card-setter">
+                            {
+                                blogs.map((blog, index) => {
+                                    return (
+
+                                        <BlogCard index={index} blog={blog} />
+                                    )
+                                })
+                            }
+                        </div>
                     </>
                     :
                     <Error />

@@ -82,6 +82,8 @@ const NewCreate = () => {
                         blogAuthorUid: currentUser.uid,
                         blogDescription: blogDescription,
                         blogComments: new Array(),
+                        blogUpvotes: new Array(),
+                        blogDownvotes: new Array(),
                         createdAt: serverTimestamp(),
                     });
 

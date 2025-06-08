@@ -15,6 +15,7 @@ import { db } from "../firebase.config";
 import { AuthContext } from '../context/AuthContext';
 import moment from 'moment';
 import Error from './Error';
+import BlogCard from './BlogCard';
 
 const Profile = () => {
 
@@ -28,6 +29,8 @@ const Profile = () => {
 
     const [user, setUser] = useState([]);
     const [blogs, setBlogs] = useState([]);
+
+    // const [i]
 
     useEffect(() => {
         onSnapshot(usersCollectionRef, (snapshot) => {
@@ -46,6 +49,8 @@ const Profile = () => {
         });
     }, [currentUser]);
 
+    const themes = ["halloween", "cmyk", "caramellatte", "bumblebee"];
+    const colors = ["orange", "cyan", "brown", "gold"];
 
     useEffect(() => {
         onSnapshot(sortRef, (snapshot) => {
@@ -69,78 +74,66 @@ const Profile = () => {
             {
                 user.length > 0 ?
                     <>
+                        <div className="grid grid-cols-2">
+                            <div className='flexy p-4'>
+                                <div className="avatar online">
+                                    <div className="w16 rounded-full">
+                                        <img src={user[0].photoURL} />
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
 
-                        <div className='flexy p-4'>
-                            {/* <img className="mask mask-circle profile-img" src={user[0].photoURL} /> */}
-                            <div className="avatar online">
-                            <div className="w16 rounded-full">
-                                <img src={user[0].photoURL} />
+                                <div className="flexy text-primary bold">
+                                    {user[0].displayName}
+                                </div>
+                                {
+                                    currentUser.displayName === id
+                                        ?
+                                        <>
+                                            <div className="flexy text-secondary bold">
+                                                {user[0].email}
+                                            </div>
+                                        </> : <></>
+                                }
                             </div>
                         </div>
+                        {/* <div className="mt-10 flexy">
+                            <div className="ubuntu-400 your-blogs-heading ml-4">
+                                Choose Themes
+                            </div>
+                            <div className="flexy">
+                                {
+                                    themes.map((element, index) => {
+                                        return <button 
+                                        onClick={() => {
+                                            document.documentElement.setAttribute('data-theme', `${themes[index]}`)
+                                        }}
+                                        style={{backgroundColor: `${colors[index]}`}} className='theme-button'></button>
+                                    })
+                                }
 
-                        </div>
-                        <div className="flexy text-primary bold">
-
-                            {user[0].displayName}
-                        </div>
-
-
-                        {
-                            currentUser.displayName === id
-                                ?
-                                <>
-                                    <div className="flexy text-secondary bold">
-                                        {user[0].email}
-                                    </div>
-                                </> : <></>
-                        }
-                        <div className="mt-10">
-
+                            </div>
+                        </div> */}
+                        <div className='mt-10'>
+                            <div className="flexy ubuntu-400 your-blogs-heading">
+                                Your Blogs
+                            </div>
                             <div className="card-setter">
-
                                 {
                                     blogs.map((blog, index) => {
                                         return (
-                                            <>
-                                                <div key={index} className='cards flexy'>
-                                                    <div className="card shadow-box-hig custom-card bg-base-100 shadow-xl">
-                                                        <figure>
-                                                            <img src={blog.blogImage} className="image-fixed-height" alt="blog image" />
-                                                        </figure>
-                                                        <div className="card-body">
-                                                            <h2 className="card-title">
-                                                                {blog.blogTitle.slice(0,20)}
-                                                                {/* {
-                                                                    index === 0 ?
-                                                                        <div className="badge badge-secondary">NEW</div>
-                                                                        :
-                                                                        <></>
-                                                                } */}
-                                                            </h2>
-                                                            <p>{blog.blogAbout.slice(0,50)}</p>
-                                                            <div className="card-actions justify-between">
-                                                                <Link
-                                                                    exact to={`/blog/${blog.id}`}
-                                                                    className="badge p-4 badge-primary">Open Blog</Link>
-                                                                <div className='text-primary card-moment'>
-                                                                    {moment(blog.createdAt.toDate()).calendar()}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </>
+                                            <BlogCard index={index} blog={blog} />
                                         )
                                     })
                                 }
 
                             </div>
                         </div>
-
                     </>
                     :
                     <>
-                    <Error />
+                        <Error />
                     </>
             }
         </>

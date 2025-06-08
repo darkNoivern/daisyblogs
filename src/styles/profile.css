@@ -5,3 +5,13 @@
 .w16 {
     width: 16rem/* 144px */;
 }
+
+.your-blogs-heading{
+    font-size: 1.25rem;
+}
+
+.theme-button{
+    margin-left: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+}

@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
+import BlogCard from './BlogCard';
 import '../styles/blogs.css'
 import { db } from '../firebase.config';
 import {
@@ -8,8 +9,6 @@ import {
     query,
     orderBy,
 } from "firebase/firestore";
-import moment from 'moment';
-import { Link } from 'react-router-dom';
 
 const Blogs = () => {
 
@@ -38,33 +37,7 @@ const Blogs = () => {
                     blogs.map((blog, index) => {
                         return (
                             <>
-                                <div key={index} className='cards flexy'>
-                                    <div className="card shadow-box-hig custom-card bg-base-100 shadow-xl">
-                                        <figure>
-                                            <img src={blog.blogImage} className="image-fixed-height" alt="blog image" />
-                                        </figure>
-                                        <div className="card-body">
-                                            <h2 className="card-title">
-                                                {blog.blogTitle.slice(0,20)}
-                                                {/* {
-                                                    index === 0 ? 
-                                                <div className="badge badge-secondary">NEW</div>
-                                                :
-                                                <></>
-                                                } */}
-                                            </h2>
-                                            <p>{blog.blogAbout.slice(0,50)}</p>
-                                            <div className="card-actions justify-between">
-                                                <Link 
-                                                exact to={`/blog/${blog.id}`}
-                                                className="badge p-4 badge-primary">Open Blog</Link>
-                                                <div className='text-primary card-moment'>
-                                                    {moment(blog.createdAt.toDate()).calendar()}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                               <BlogCard index={index} blog={blog} />
                             </>
                         )
                     })

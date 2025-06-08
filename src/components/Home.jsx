@@ -79,7 +79,7 @@ const Home = () => {
                                     <img className='my-3' src={snom} alt="" />
                                 </div>
                                 <div className="flexy mt-2 text-secondary bold">
-                                    daisyBlogs
+                                    The Curiosity Chronicle
                                 </div>
                             </div>
 
